@@ -15,6 +15,17 @@ before release. This file records the **verified** pin for the current offering.
 
 To regenerate the bank: `python generate_rollout_bank.py --out ../rollout_bank --clips 4 --frames 24`.
 
+### 5b Part 2 — Opening the Box (verified end-to-end, H200)
+
+All four exercises were run against this exact pinned checkpoint before release:
+
+- **VAE round-trip:** one 320×576 frame → latent shape `(1, 4, 40, 72)` → **48.0x** compression (element count) → **0.0015** mean-abs-diff reconstruction error (0-1 scale). `pipe.vae` is a standard `AutoencoderKL` (per-frame 2D, not spatiotemporal).
+- **Device pitfall (found and fixed):** `pipe.vae.device` reports `cuda` even when `enable_model_cpu_offload()` has the weights sitting on CPU, because the offload hook only fires on the pipeline's `forward()`, not on a raw `.encode()`/`.decode()` call. Fix: explicitly `.to('cuda')` (or read `next(vae.parameters()).device`) rather than trusting `.device`.
+- **Diffusion step-count sweep** (5/15/25 steps): all three ran clean; `temporal_consistency` 0.951 → 0.973 → 0.972 (5→15→25) — quality gain from 5→15 is visible, 15→25 is marginal on this prompt/seed.
+- **Guidance-scale sweep** (1.0/9.0/15.0): all three ran clean; flicker rises sharply at high guidance (0.0015 → 0.0066 → 0.0178).
+- **Latent-space interpolation:** `TextToVideoSDPipeline` is on the **older** diffusers callback API — `callback(step, timestep, latents)`, not `callback_on_step_end(pipe, step, timestep, callback_kwargs)`. Learned latent shape via a cheap 1-step probe: `(1, 4, 24, 40, 72)` (**must** pass the same `height`/`width` to the probe call as the real generations, or it silently probes the pipeline's default resolution instead). Plain linear interpolation (lerp) between two seeds' initial noise measurably shrinks the norm (526 → 526 → **372** at the midpoint) and decodes to a flat, near-featureless frame; **slerp** (spherical interpolation) holds the norm constant (≈526 throughout) and decodes to a genuinely distinct, coherent in-between scene. The notebook uses slerp for exactly this reason.
+- **Status:** verified end-to-end on an H200 (~4-8s per generation there; expect the same T4 multiplier as the Part 1 note above). Total Part 2 GPU time budget: comfortably under the ~1 hour allotted.
+
 ## 5a — VLM (object hallucination)
 
 - **Checkpoint:** `HuggingFaceTB/SmolVLM-Instruct`
