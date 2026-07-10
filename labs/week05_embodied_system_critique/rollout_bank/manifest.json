@@ -1,0 +1,28 @@
+{
+  "model": "cerspense/zeroscope_v2_576w",
+  "frames": 24,
+  "steps": 25,
+  "height": 320,
+  "width": 576,
+  "clips": [
+    {
+      "name": "clip01_arm_pick",
+      "prompt": "a robotic arm slowly picking up a red cube from a table, smooth motion, realistic",
+      "n_frames": 24,
+      "seconds_this_gpu": 10.0
+    },
+    {
+      "name": "clip02_ball_drop",
+      "prompt": "a ball falling and bouncing on the floor, physically realistic motion",
+      "n_frames": 24,
+      "seconds_this_gpu": 7.7
+    }
+  ],
+  "peak_vram_gb_fp16_offload": 5.81,
+  "note": "peak_vram measured here is the T4-fit proxy; seconds_this_gpu is NOT the Colab T4 time.",
+  "committed_sample": {
+    "frames_per_clip": 8,
+    "resolution": "384x213",
+    "note": "compact verification sample; regenerate the full-res 24-frame bank with generate_rollout_bank.py"
+  }
+}
