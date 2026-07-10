@@ -139,6 +139,58 @@ def frames_from_diffusers(output) -> List[Frame]:
     return out
 
 
+def show_frames(frames: List[Frame], n: int = 8):
+    """Lay out up to n evenly-spaced frames as one strip image, each panel
+    captioned with its frame index.
+
+    Returns a PIL Image, which Jupyter/Colab renders inline -- one image per
+    clip that's easy to screenshot or right-click-save straight into a report,
+    with the frame numbers already on it so a critique can cite "frame 12"
+    and point at exactly the panel that shows it. Handles both uint8 [0,255]
+    and float [0,1] frame arrays.
+    """
+    from PIL import Image, ImageDraw
+    idxs = np.linspace(0, len(frames) - 1, min(n, len(frames))).round().astype(int)
+    thumbs = []
+    for i in idxs:
+        f = np.asarray(frames[int(i)])
+        if f.dtype != np.uint8:
+            f = (np.clip(f, 0.0, 1.0) * 255).round().astype(np.uint8)
+        thumbs.append((int(i), Image.fromarray(f)))
+    w, h = thumbs[0][1].size
+    label_h = 18
+    strip = Image.new("RGB", (w * len(thumbs), h + label_h), "white")
+    draw = ImageDraw.Draw(strip)
+    for k, (i, im) in enumerate(thumbs):
+        strip.paste(im, (k * w, 0))
+        draw.text((k * w + 4, h + 2), f"frame {i}", fill=(0, 0, 0))
+    return strip
+
+
+def compare_frames(named_frames: "Dict[str, Frame]"):
+    """Lay out named single frames side by side, each captioned with its label.
+
+    Use this for side-by-side comparisons that are NOT a time sequence --
+    e.g. original vs. VAE reconstruction, or a latent-interpolation sweep --
+    as opposed to show_frames(), which captions panels by frame index.
+    """
+    from PIL import Image, ImageDraw
+    thumbs = []
+    for label, f in named_frames.items():
+        arr = np.asarray(f)
+        if arr.dtype != np.uint8:
+            arr = (np.clip(arr, 0.0, 1.0) * 255).round().astype(np.uint8)
+        thumbs.append((str(label), Image.fromarray(arr)))
+    w, h = thumbs[0][1].size
+    label_h = 20
+    strip = Image.new("RGB", (w * len(thumbs), h + label_h), "white")
+    draw = ImageDraw.Draw(strip)
+    for k, (label, im) in enumerate(thumbs):
+        strip.paste(im, (k * w, 0))
+        draw.text((k * w + 4, h + 2), label, fill=(0, 0, 0))
+    return strip
+
+
 if __name__ == "__main__":
     for kind in ("static", "moving", "noise"):
         print(kind, "->", score_clip(synth_clip(kind), label=kind))
