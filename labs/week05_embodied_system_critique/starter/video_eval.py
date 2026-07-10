@@ -191,6 +191,34 @@ def compare_frames(named_frames: "Dict[str, Frame]"):
     return strip
 
 
+def save_video(frames: List[Frame], fps: int = 8, path: Optional[str] = None) -> str:
+    """Encode frames to a playable .mp4 and return its file path.
+
+    Feed the returned path to IPython.display.Video(path, embed=True) in a
+    notebook cell to get an actual play/pause/scrub player alongside the
+    frame strip -- embed=True inlines the video as base64 so it survives
+    Colab's remote-VM file serving instead of trying to link a local path.
+
+    Frames are normalized to uint8 PIL images before handing off to
+    diffusers' export_to_video(): that function's own numpy-array path
+    assumes float [0,1] input and multiplies by 255 unconditionally, which
+    silently corrupts already-uint8 [0,255] frames (overflow wraparound).
+    Going through PIL images sidesteps that entirely.
+    """
+    from PIL import Image
+    from diffusers.utils import export_to_video
+    import tempfile
+    pil_frames = []
+    for f in frames:
+        arr = np.asarray(f)
+        if arr.dtype != np.uint8:
+            arr = (np.clip(arr, 0.0, 1.0) * 255).round().astype(np.uint8)
+        pil_frames.append(Image.fromarray(arr))
+    if path is None:
+        path = tempfile.NamedTemporaryFile(suffix=".mp4", delete=False).name
+    return export_to_video(pil_frames, path, fps=fps)
+
+
 if __name__ == "__main__":
     for kind in ("static", "moving", "noise"):
         print(kind, "->", score_clip(synth_clip(kind), label=kind))
