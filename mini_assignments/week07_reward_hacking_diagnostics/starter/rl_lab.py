@@ -104,16 +104,32 @@ class RewardHackGrid:
 # Generic tabular Q-learning
 # --------------------------------------------------------------------------- #
 @dataclass
+class StepTrace:
+    """One Q-learning update, kept only for episodes a caller asked to trace."""
+    step: int
+    state: int
+    action: int
+    reward: float
+    q_before: float
+    td_target: float
+    td_error: float
+    q_after: float
+
+
+@dataclass
 class EpisodeLog:
     ret: float
     success: bool
     steps: int
+    trace: Optional[List[StepTrace]] = None
 
 
 @dataclass
 class TrainResult:
     Q: np.ndarray
     logs: List[EpisodeLog] = field(default_factory=list)
+    # (episode_index, Q.copy()) pairs, only populated if snapshot_every was set.
+    snapshots: List[Tuple[int, np.ndarray]] = field(default_factory=list)
 
     def returns(self) -> List[float]:
         return [e.ret for e in self.logs]
@@ -125,18 +141,40 @@ class TrainResult:
         tail = self.successes()[-window:]
         return sum(tail) / max(1, len(tail))
 
+    def episodes_to_reach(self, threshold: float, window: int = 50) -> Optional[int]:
+        """First episode index whose trailing `window`-episode success rate
+        reaches `threshold`, or None if it never does. Used to compare how
+        fast different hyperparameters converge, not just where they end up."""
+        succ = self.successes()
+        for i in range(len(succ)):
+            tail = succ[max(0, i - window + 1): i + 1]
+            if sum(tail) / len(tail) >= threshold:
+                return i
+        return None
+
 
 def q_learning(env, n_states: int, n_actions: int, episodes: int = 2000,
                alpha: float = 0.1, gamma: float = 0.95,
                epsilon: float = 1.0, epsilon_min: float = 0.05,
                epsilon_decay: float = 0.999, max_steps: int = 100,
                is_success: Optional[Callable] = None,
-               seed: int = 0) -> TrainResult:
+               seed: int = 0,
+               snapshot_every: Optional[int] = None,
+               trace_episodes: Optional[set] = None) -> TrainResult:
     """Standard epsilon-greedy tabular Q-learning.
 
     is_success(terminated, reward, info) -> bool defines TASK success, which is
     intentionally separate from reward. Defaults to "terminated with positive
     reward" (works for FrozenLake) but RewardHackGrid passes a goal check.
+
+    snapshot_every: if set, record a (episode_index, Q.copy()) snapshot every
+    N episodes (plus a final one), so a caller can plot how specific Q-values
+    move over the course of training.
+
+    trace_episodes: if set, record every individual TD update (state, action,
+    reward, Q-value before/after, TD error) for just those episode indices --
+    the "watch one trajectory update the Q-table" view. Left None for normal
+    runs so training stays cheap.
     """
     rng = np.random.default_rng(seed)
     Q = np.zeros((n_states, n_actions), dtype=float)
@@ -145,28 +183,40 @@ def q_learning(env, n_states: int, n_actions: int, episodes: int = 2000,
             return bool(terminated and reward > 0)
 
     logs: List[EpisodeLog] = []
+    snapshots: List[Tuple[int, np.ndarray]] = []
     eps = epsilon
-    for _ in range(episodes):
+    for ep in range(episodes):
         obs, _ = env.reset(seed=int(rng.integers(0, 2**31 - 1)))
         total = 0.0
         success = False
-        for _ in range(max_steps):
+        step_trace = [] if (trace_episodes and ep in trace_episodes) else None
+        for t in range(max_steps):
             if rng.random() < eps:
                 action = int(rng.integers(0, n_actions))
             else:
                 action = int(np.argmax(Q[obs]))
             nxt, reward, terminated, truncated, info = env.step(action)
             best_next = 0.0 if terminated else np.max(Q[nxt])
-            Q[obs, action] += alpha * (reward + gamma * best_next - Q[obs, action])
+            q_before = Q[obs, action]
+            td_target = reward + gamma * best_next
+            td_error = td_target - q_before
+            Q[obs, action] += alpha * td_error
+            if step_trace is not None:
+                step_trace.append(StepTrace(t, obs, action, reward, q_before,
+                                             td_target, td_error, Q[obs, action]))
             obs = nxt
             total += reward
             if is_success(terminated, reward, info):
                 success = True
             if terminated or truncated:
                 break
-        logs.append(EpisodeLog(total, success, _ + 1))
+        logs.append(EpisodeLog(total, success, t + 1, trace=step_trace))
+        if snapshot_every and ep % snapshot_every == 0:
+            snapshots.append((ep, Q.copy()))
         eps = max(epsilon_min, eps * epsilon_decay)
-    return TrainResult(Q, logs)
+    if snapshot_every:
+        snapshots.append((episodes - 1, Q.copy()))
+    return TrainResult(Q, logs, snapshots)
 
 
 def greedy_policy(Q: np.ndarray) -> np.ndarray:
