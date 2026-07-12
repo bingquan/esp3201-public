@@ -1,0 +1,3 @@
+# Week 10 hands-on trustworthy-AI lab.
+numpy>=1.24
+scikit-learn>=1.3

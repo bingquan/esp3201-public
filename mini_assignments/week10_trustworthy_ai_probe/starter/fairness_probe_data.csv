@@ -1,0 +1,9 @@
+condition,lighting,subgroup,n_samples,detections_correct
+indoor,bright,adult,800,784
+indoor,bright,child,300,282
+indoor,dim,adult,500,470
+indoor,dim,child,200,164
+outdoor,bright,adult,700,686
+outdoor,bright,child,250,235
+outdoor,dim,adult,450,414
+outdoor,dim,child,150,111

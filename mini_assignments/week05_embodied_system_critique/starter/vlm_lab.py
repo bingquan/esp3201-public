@@ -132,7 +132,7 @@ class HFVLM:
         from transformers import AutoProcessor, AutoModelForImageTextToText
         self.processor = AutoProcessor.from_pretrained(model_id)
         self.model = AutoModelForImageTextToText.from_pretrained(
-            model_id, torch_dtype=getattr(torch, dtype)).to(device)
+            model_id, dtype=getattr(torch, dtype)).to(device)
         self.device = device
 
     def answer(self, image, question: str, obj: str = "", present: bool = False) -> str:

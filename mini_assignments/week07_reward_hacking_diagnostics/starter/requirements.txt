@@ -1,0 +1,4 @@
+# Week 7 hands-on RL + reward-hacking lab.
+numpy>=1.24
+gymnasium>=0.29
+matplotlib>=3.7
