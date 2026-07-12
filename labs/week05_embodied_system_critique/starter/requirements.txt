@@ -1,8 +1,0 @@
-# Week 5 hands-on labs (VLM probe + video world model).
-# Core (offline checks run on these):
-numpy>=1.24
-pillow>=10.0
-# Installed inside the notebooks for the GPU / API paths (PIN exact versions):
-#   transformers accelerate torch          # 5a local VLM
-#   google-generativeai                     # 5a hosted Gemini
-#   diffusers imageio                       # 5b video generation

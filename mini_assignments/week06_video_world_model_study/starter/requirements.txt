@@ -1,0 +1,6 @@
+# Week 6 hands-on lab (video world model).
+# Core (offline checks run on these):
+numpy>=1.24
+pillow>=10.0
+# Installed inside the notebook for the GPU path (PIN exact versions):
+#   diffusers imageio                       # video generation

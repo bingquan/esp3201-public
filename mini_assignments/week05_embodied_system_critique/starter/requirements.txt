@@ -1,0 +1,7 @@
+# Week 5 hands-on lab (VLM probe).
+# Core (offline checks run on these):
+numpy>=1.24
+pillow>=10.0
+# Installed inside the notebook for the GPU / API paths (PIN exact versions):
+#   transformers accelerate torch          # local VLM
+#   google-generativeai                     # hosted Gemini

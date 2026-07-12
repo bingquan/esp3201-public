@@ -1,4 +1,4 @@
-"""Week 5a hands-on lab: probing a VLM for object hallucination (POPE-style).
+"""Week 5 hands-on lab: probing a VLM for object hallucination (POPE-style).
 
 The grounding probe is fully reproducible: scenes are synthesized with EXACT
 ground truth (which colored shapes are present), and the metric of interest is

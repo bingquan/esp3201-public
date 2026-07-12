@@ -1,7 +1,7 @@
-# Week 5 Rollout Bank
+# Week 6 Rollout Bank
 
-Pre-generated video frames so students **without a GPU** can do the Week 5b
-video lab (and the Week 5 mini-assignment Track B) on real generated output.
+Pre-generated video frames so students **without a GPU** can do the Week 6
+video lab (and the Week 6 mini-assignment Track B) on real generated output.
 
 ## What is committed here
 

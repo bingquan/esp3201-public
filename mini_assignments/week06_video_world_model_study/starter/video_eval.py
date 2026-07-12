@@ -1,4 +1,4 @@
-"""Week 5b hands-on lab: evaluating a generated video / world-model rollout.
+"""Week 6 hands-on lab: evaluating a generated video / world-model rollout.
 
 Generation needs a GPU (done on Colab). The EVALUATION here is fully offline
 and reproducible: given a list of frames, it computes objective temporal
@@ -88,7 +88,7 @@ def load_frames_from_dir(path: str) -> List[Frame]:
     """Load PNG/JPG frames (sorted by name) from a directory.
 
     Use this for the precomputed rollout-bank fallback when no GPU is available:
-    point it at labs/week05_embodied_system_critique/rollout_bank/<clip>/.
+    point it at labs/week06_video_world_model_study/rollout_bank/<clip>/.
     """
     import glob
     import os

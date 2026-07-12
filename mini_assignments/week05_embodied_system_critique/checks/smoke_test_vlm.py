@@ -1,4 +1,4 @@
-"""Week 5a VLM lab smoke test (offline). CPU-only, no model download.
+"""Week 5 VLM lab smoke test (offline). CPU-only, no model download.
 
 Run from the lab root:  python checks/smoke_test_vlm.py
 Verifies the scene synthesis + probe + scoring pipeline with the mock backend.

@@ -1,4 +1,4 @@
-"""Week 5b video-eval lab smoke test (offline). CPU-only, no model.
+"""Week 6 video-eval lab smoke test (offline). CPU-only, no model.
 
 Run from the lab root:  python checks/smoke_test_video.py
 Validates the temporal metrics on synthetic clips. Real generation runs on Colab.
