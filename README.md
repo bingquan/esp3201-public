@@ -14,9 +14,9 @@ Currently mirrored:
 - `mini_assignments/week06_video_world_model_study/` — Week 6, video
   world-model probe: `starter/notebooks/week06_video_world_model_colab.ipynb`
 - `mini_assignments/week09_agent_safety_case_colab/` — Week 9, stateful
-  agent + telemetry verification: `notebooks/week08_agent_colab-v3.ipynb`
-  (current version; earlier `week08_agent_colab-v2.ipynb` and
-  `week08_agent_safety_case_colab.ipynb` kept for reference)
+  agent + telemetry verification: `notebooks/week09_agent_colab-v3.ipynb`
+  (current version; earlier `week09_agent_colab-v2.ipynb` and
+  `week09_agent_safety_case_colab.ipynb` kept for reference)
 
 Open any notebook directly in Colab from its GitHub URL.
 
