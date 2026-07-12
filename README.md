@@ -13,12 +13,13 @@ Currently mirrored:
   hallucination probe: `starter/notebooks/week05_vlm_grounding_colab.ipynb`
 - `mini_assignments/week06_video_world_model_study/` — Week 6, video
   world-model probe: `starter/notebooks/week06_video_world_model_colab.ipynb`
-- `mini_assignments/week09_agent_safety_case_colab/` — Week 9, stateful
-  agent + telemetry verification: `notebooks/week09_agent_colab-v3.ipynb`
-  (current version; earlier `week09_agent_colab-v2.ipynb` and
-  `week09_agent_safety_case_colab.ipynb` kept for reference)
+- `mini_assignments/week09_agent_safety_case_colab/` — Week 9, probing an
+  agent: `notebooks/week09_agent_colab-v3.ipynb` (current version; earlier
+  `week09_agent_colab-v2.ipynb` and `week09_agent_safety_case_colab.ipynb`
+  kept for reference), with the assignment brief (`README.md`), submission
+  template, and grading rubric (`grading_rubric.md`)
 
 Open any notebook directly in Colab from its GitHub URL.
 
-Instructor material (answer keys, rubrics, runbooks) is intentionally not
-included here — this repo carries only what students need to run the labs.
+Answer keys are intentionally not included here — this repo carries what
+students need to run the labs and submit, but not grading answers.
