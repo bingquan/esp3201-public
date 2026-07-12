@@ -1,0 +1,86 @@
+{
+  "model_family": "example-tinycnn-v1",
+  "configs": [
+    {
+      "config_name": "fp32",
+      "claimed_latency_ms": 18.4,
+      "claimed_accuracy": 0.90,
+      "predictions": [
+        {"input_id": "in_001", "predicted_label": "positive"},
+        {"input_id": "in_002", "predicted_label": "negative"},
+        {"input_id": "in_003", "predicted_label": "positive"},
+        {"input_id": "in_004", "predicted_label": "positive"},
+        {"input_id": "in_005", "predicted_label": "negative"},
+        {"input_id": "in_006", "predicted_label": "negative"},
+        {"input_id": "in_007", "predicted_label": "positive"},
+        {"input_id": "in_008", "predicted_label": "negative"},
+        {"input_id": "in_009", "predicted_label": "positive"},
+        {"input_id": "in_010", "predicted_label": "negative"},
+        {"input_id": "in_011", "predicted_label": "negative"},
+        {"input_id": "in_012", "predicted_label": "negative"},
+        {"input_id": "in_013", "predicted_label": "positive"},
+        {"input_id": "in_014", "predicted_label": "negative"},
+        {"input_id": "in_015", "predicted_label": "positive"},
+        {"input_id": "in_016", "predicted_label": "positive"},
+        {"input_id": "in_017", "predicted_label": "positive"},
+        {"input_id": "in_018", "predicted_label": "positive"},
+        {"input_id": "in_019", "predicted_label": "negative"},
+        {"input_id": "in_020", "predicted_label": "negative"}
+      ]
+    },
+    {
+      "config_name": "fp16",
+      "claimed_latency_ms": 9.8,
+      "claimed_accuracy": 0.85,
+      "predictions": [
+        {"input_id": "in_001", "predicted_label": "positive"},
+        {"input_id": "in_002", "predicted_label": "negative"},
+        {"input_id": "in_003", "predicted_label": "positive"},
+        {"input_id": "in_004", "predicted_label": "positive"},
+        {"input_id": "in_005", "predicted_label": "negative"},
+        {"input_id": "in_006", "predicted_label": "positive"},
+        {"input_id": "in_007", "predicted_label": "positive"},
+        {"input_id": "in_008", "predicted_label": "negative"},
+        {"input_id": "in_009", "predicted_label": "positive"},
+        {"input_id": "in_010", "predicted_label": "negative"},
+        {"input_id": "in_011", "predicted_label": "negative"},
+        {"input_id": "in_012", "predicted_label": "negative"},
+        {"input_id": "in_013", "predicted_label": "positive"},
+        {"input_id": "in_014", "predicted_label": "negative"},
+        {"input_id": "in_015", "predicted_label": "positive"},
+        {"input_id": "in_016", "predicted_label": "positive"},
+        {"input_id": "in_017", "predicted_label": "positive"},
+        {"input_id": "in_018", "predicted_label": "positive"},
+        {"input_id": "in_019", "predicted_label": "negative"},
+        {"input_id": "in_020", "predicted_label": "negative"}
+      ]
+    },
+    {
+      "config_name": "int8_dynamic",
+      "claimed_latency_ms": 4.6,
+      "claimed_accuracy": 0.85,
+      "predictions": [
+        {"input_id": "in_001", "predicted_label": "positive"},
+        {"input_id": "in_002", "predicted_label": "negative"},
+        {"input_id": "in_003", "predicted_label": "negative"},
+        {"input_id": "in_004", "predicted_label": "positive"},
+        {"input_id": "in_005", "predicted_label": "positive"},
+        {"input_id": "in_006", "predicted_label": "negative"},
+        {"input_id": "in_007", "predicted_label": "positive"},
+        {"input_id": "in_008", "predicted_label": "negative"},
+        {"input_id": "in_009", "predicted_label": "positive"},
+        {"input_id": "in_010", "predicted_label": "negative"},
+        {"input_id": "in_011", "predicted_label": "negative"},
+        {"input_id": "in_012", "predicted_label": "positive"},
+        {"input_id": "in_013", "predicted_label": "positive"},
+        {"input_id": "in_014", "predicted_label": "negative"},
+        {"input_id": "in_015", "predicted_label": "positive"},
+        {"input_id": "in_016", "predicted_label": "positive"},
+        {"input_id": "in_017", "predicted_label": "positive"},
+        {"input_id": "in_018", "predicted_label": "positive"},
+        {"input_id": "in_019", "predicted_label": "positive"},
+        {"input_id": "in_020", "predicted_label": "positive"}
+      ]
+    }
+  ]
+}
