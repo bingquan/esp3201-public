@@ -109,6 +109,7 @@ class StepTrace:
     step: int
     state: int
     action: int
+    next_state: int
     reward: float
     q_before: float
     td_target: float
@@ -202,7 +203,7 @@ def q_learning(env, n_states: int, n_actions: int, episodes: int = 2000,
             td_error = td_target - q_before
             Q[obs, action] += alpha * td_error
             if step_trace is not None:
-                step_trace.append(StepTrace(t, obs, action, reward, q_before,
+                step_trace.append(StepTrace(t, obs, action, nxt, reward, q_before,
                                              td_target, td_error, Q[obs, action]))
             obs = nxt
             total += reward
