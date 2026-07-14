@@ -102,6 +102,9 @@ class SearchResult:
     nodes_expanded: int = 0
     max_frontier: int = 0
     runtime_s: float = 0.0
+    # cells in the order popped off the frontier -- lets a plot show *how* the
+    # search grew (BFS's ripple vs DFS's snake vs A*'s cone), not just the count
+    expanded_order: List[Cell] = field(default_factory=list)
 
     @property
     def path_len(self) -> int:
@@ -164,22 +167,26 @@ def bfs(grid: Grid) -> SearchResult:
     t0 = time.perf_counter()
     frontier = deque([start])
     came_from: Dict[Cell, Optional[Cell]] = {start: None}
+    order: List[Cell] = []
     expanded = 0
     max_frontier = 1
     while frontier:
         max_frontier = max(max_frontier, len(frontier))
         node = frontier.popleft()
         expanded += 1
+        order.append(node)
         if node == goal:
             path = _reconstruct(came_from, goal)
             return SearchResult("BFS", True, path, _path_cost(grid, path),
-                                expanded, max_frontier, time.perf_counter() - t0)
+                                expanded, max_frontier, time.perf_counter() - t0,
+                                expanded_order=order)
         for nxt in grid.neighbors(node):
             if nxt not in came_from:
                 came_from[nxt] = node
                 frontier.append(nxt)
     return SearchResult("BFS", False, nodes_expanded=expanded,
-                        max_frontier=max_frontier, runtime_s=time.perf_counter() - t0)
+                        max_frontier=max_frontier, runtime_s=time.perf_counter() - t0,
+                        expanded_order=order)
 
 
 def dfs(grid: Grid) -> SearchResult:
@@ -188,6 +195,7 @@ def dfs(grid: Grid) -> SearchResult:
     frontier = [start]
     came_from: Dict[Cell, Optional[Cell]] = {start: None}
     visited = set()
+    order: List[Cell] = []
     expanded = 0
     max_frontier = 1
     while frontier:
@@ -197,15 +205,17 @@ def dfs(grid: Grid) -> SearchResult:
             continue
         visited.add(node)
         expanded += 1
+        order.append(node)
         if node == goal:
             path = _reconstruct(came_from, goal)
             return SearchResult("DFS", True, path, _path_cost(grid, path),
-                                expanded, max_frontier, time.perf_counter() - t0)
+                                expanded, max_frontier, time.perf_counter() - t0,
+                                expanded_order=order)
         for nxt in grid.neighbors(node):
             if nxt not in visited:
                 came_from.setdefault(nxt, node)
                 frontier.append(nxt)
-    return SearchResult("DFS", False, nodes_expanded=expanded,
+    return SearchResult("DFS", False, nodes_expanded=expanded, expanded_order=order,
                         max_frontier=max_frontier, runtime_s=time.perf_counter() - t0)
 
 
@@ -231,6 +241,7 @@ def _best_first(grid: Grid, label: str,
     h0 = heuristic(start, goal)
     frontier: List[Tuple[float, int, Cell]] = [(g_weight * 0 + h_weight * h0, counter, start)]
     closed = set()
+    order: List[Cell] = []
     expanded = 0
     max_frontier = 1
     while frontier:
@@ -240,10 +251,12 @@ def _best_first(grid: Grid, label: str,
             continue
         closed.add(node)
         expanded += 1
+        order.append(node)
         if node == goal:
             path = _reconstruct(came_from, goal)
             return SearchResult(label, True, path, _path_cost(grid, path),
-                                expanded, max_frontier, time.perf_counter() - t0)
+                                expanded, max_frontier, time.perf_counter() - t0,
+                                expanded_order=order)
         for nxt in grid.neighbors(node):
             tentative = g_score[node] + grid.entry_cost(nxt)
             if tentative < g_score.get(nxt, float("inf")):
@@ -252,7 +265,7 @@ def _best_first(grid: Grid, label: str,
                 counter += 1
                 f = g_weight * tentative + h_weight * heuristic(nxt, goal)
                 heapq.heappush(frontier, (f, counter, nxt))
-    return SearchResult(label, False, nodes_expanded=expanded,
+    return SearchResult(label, False, nodes_expanded=expanded, expanded_order=order,
                         max_frontier=max_frontier, runtime_s=time.perf_counter() - t0)
 
 
