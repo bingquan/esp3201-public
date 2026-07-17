@@ -1,4 +1,0 @@
-# Week 4 hands-on search lab.
-# The lab itself uses only the Python standard library (3.10+).
-# matplotlib is optional, only if you want to plot your own comparisons.
-matplotlib>=3.7
