@@ -15,7 +15,8 @@ the private course repo.
 Currently mirrored:
 
 - `mini_assignments/week04_planner_tradeoff_study/starter/notebooks/week04_planning_colab.ipynb` — Week 4, search under real constraints (CPU-only)
-- `mini_assignments/week05_embodied_system_critique/starter/notebooks/week05_vlm_grounding_colab.ipynb` — Week 5, VLM hallucination probe
+- `mini_assignments/week05_embodied_system_critique/starter/notebooks/week05_vlm_grounding_colab.ipynb` — Week 5, VLM hallucination probe (v1): SmolVLM (local GPU) vs a free OpenRouter model, compared. Needs a GPU runtime and/or an `OPENROUTER_API_KEY` Colab secret.
+- `mini_assignments/week05_embodied_system_critique/starter/notebooks/week05_open_vocab_grounding_colab.ipynb` — Week 5, open-vocabulary grounding across OWL-ViT / SAM 3 / SAM / SmolVLM (v2; independent of v1, not a replacement). Six CC0 starter photos are embedded in the notebook; provenance is printed by the image-bank cell.
 - `mini_assignments/week06_video_world_model_study/starter/notebooks/week06_video_world_model_colab.ipynb` — Week 6, video world-model probe
 - `mini_assignments/week07_reward_hacking_diagnostics/starter/notebooks/week07_rl_colab.ipynb` — Week 7, Q-learning and reward hacking (CPU-only)
 - `mini_assignments/week09_agent_safety_case_colab/notebooks/week09_agent_colab-v3.ipynb` — Week 9, probing an agent (current version; earlier `week09_agent_colab-v2.ipynb` and `week09_agent_safety_case_colab.ipynb` kept for reference)
