@@ -21,7 +21,9 @@ Currently mirrored:
 - `mini_assignments/week07_reward_hacking_diagnostics/starter/notebooks/week07_rl_colab.ipynb` — Week 7, Q-learning and reward hacking (CPU-only)
 - `mini_assignments/week09_agent_safety_case_colab/notebooks/week09_agent_colab-v3.ipynb` — Week 9, probing an agent (current version; earlier `week09_agent_colab-v2.ipynb` and `week09_agent_safety_case_colab.ipynb` kept for reference)
 - `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10_trustworthy_ai_colab.ipynb` — Week 10, fairness/explainability/privacy probes (CPU-only)
-- `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10b_agentic_security_colab_v2.ipynb` — Week 10b, direct/indirect prompt injection against a tool-using agent, with and without guardrails (v2, current version; independent of the base Week 10 notebook). Needs a GPU runtime and/or an `OPENROUTER_API_KEY` Colab secret.
+- `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10b_agentic_security_colab_v4.ipynb` — Week 10b, current version: indirect prompt injection, action permission gates, and keyword filtering. Includes runnable starter examples and recorded live attack/defence traces. Uses the Gemini API with a `GEMINI_API_KEY`; CPU runtime, no GPU required.
+- `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10b_agentic_security_colab_v3.ipynb` — Week 10b v3, kept for reference.
+- `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10b_agentic_security_colab_v2.ipynb` — Week 10b v2, kept for reference; uses a GPU runtime and/or an `OPENROUTER_API_KEY` Colab secret.
 - `mini_assignments/week10_trustworthy_ai_probe/starter/notebooks/week10b_agentic_security_colab.ipynb` — Week 10b v1, kept for reference. Same experiments and same code cells as v2; v2 only reorders the guardrail sections into one escalating story and adds an anchor table.
 
 Open any notebook directly in Colab from its GitHub URL.
